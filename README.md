@@ -1,60 +1,32 @@
-# Project MSCABA: Agro-Industrial Collection Center & Scale Simulator
-Modelo de Simulación de Centros de Acopio y Básculas Agroindustriales
+# Project MSCABA: Simulador de Centro de Acopio y Básculas Agroindustriales
+
+Sistema de gestión logística y simulación de centro de acopio agroindustrial desarrollado en **Java (JDK 21+)** con interfaz gráfica moderna construida en **JavaFX**. Implementa de manera estricta estructuras de datos avanzadas, patrones de diseño de software y un modelo matemático estadístico para el control de camiones, básculas y almacenamiento en bodega.
 
 ---
 
-## English Version
+## Arquitectura y Estructuras de Datos Implementadas
 
-### About the Project
-Project MSCABA is an academic software solution developed for a Data Structures course. It simulates an agro-industrial collection center where trucks arrive with agricultural goods, get prioritized, weighed on a scale, and assigned to specific warehouse storage slots.
-
-### Development Note
-The code for this project was generated with the assistance of Artificial Intelligence (AI), strictly structured and developed under user specifications, supervision, and domain requirements for third-semester Data Structures.
-
-### Architecture & Design Pattern
-The system is built following the MVC (Model-View-Controller) design pattern:
-- model: Core domain logic and implementation of linear/non-linear data structures.
-- view: Text-based interface (Console CLI) designed for easy transition to JavaFX/CSS.
-- controller: Coordinates data flow between view and model options.
-
-### Implemented Data Structures
-1. Priority Queue: Handles incoming trucks, prioritizing perishable goods over standard dry goods.
-2. 2D Matrix: Represents the warehouse grid layout, tracking free (0) and occupied (1) storage slots.
-3. Stack (LIFO): Implements the Undo feature for recent scale weighing operations.
-4. Simple Linked List: Maintains the chronological record of processed trucks.
-5. Double Linked List: Manages scale tickets for bidirectional audit inspection.
-6. Circular Linked List: Handles equitable rotation for quality control inspectors.
+El proyecto sigue estrictamente el patrón arquitectónico **MVC (Modelo-Vista-Controlador)**:
+1. **Cola con Prioridad (`TruckPriorityQueue`):** Organiza la llegada de vehículos a la entrada priorizando de forma automática las mercancías perecederas sobre granos e insumos.
+2. **Matriz Bidimensional (`WarehouseMatrix`):** Representa la cuadrícula de almacenamiento de la bodega ($3 \times 3$ muelles de recepción), gestionando estados dinámicos (libres `0` y ocupados `1`).
+3. **Pila LIFO (`UndoStack`):** Permite revertir las últimas operaciones de pesaje y asignación, liberando el slot correspondiente en la bodega y devolviendo el camión a la cola prioritaria.
+4. **Listas Enlazadas (Simple, Doble y Circular):**
+   * **Lista Simple (`ProcessedHistoryList`):** Historial cronológico de camiones procesados con cálculo de peso neto.
+   * **Lista Doble (`AuditDoubleList` & `VehicleCatalogList`):** Auditoría bidireccional de tiquetes de báscula y catálogo dinámico de tipos de vehículos (*Sencillo*, *Doble Troque*, *Tractocamión*) con pesos de tara automáticos.
+   * **Lista Circular (`InspectorCircularList`):** Rotación equitativa y continua de los inspectores de calidad en turno.
+5. **Vectores y Matrices Estadísticas (`CenterStatistics`):** Vectores 1D de tasas de descarga y matrices 2D estadísticas para el cálculo de tiempos estimados de espera y descarga basados en fórmulas algorítmicas.
 
 ---
 
-## Versión en Español
+## Requisitos del Sistema y Ejecución
 
-### Sobre el Proyecto
-Project MSCABA es una aplicación académica desarrollada para la asignatura de Estructuras de Datos. Simula la operación de un centro de acopio agroindustrial donde los camiones ingresan con productos agrícolas, se organizan por prioridad, pasan por báscula y se asignan a celdas de almacenamiento en bodega.
+* **Java Development Kit (JDK):** Versión 21 o superior.
+* **JavaFX SDK:** Versión 27+ (o compatible con tu entorno).
 
-### Nota de Desarrollo
-El código de este proyecto fue generado utilizando herramientas de Inteligencia Artificial (IA), bajo el diseño, especificaciones, supervisión directa y requerimientos del usuario para el nivel universitario de Estructuras de Datos.
+### Comandos de Compilación y Ejecución (Terminal / CLI)
 
-### Arquitectura y Patrón de Diseño
-La aplicación está construida bajo el patrón de diseño MVC (Modelo-Vista-Controlador):
-- model: Contiene la lógica del dominio y la implementación de las estructuras de datos.
-- view: Interfaz por consola de comandos (CLI), estructurada para su futura migración a JavaFX/CSS.
-- controller: Gestor principal que conecta el menú de usuario con la lógica del modelo.
+Compila todas las clases del modelo, vista y controlador apuntando al SDK de JavaFX:
 
-### Estructuras de Datos Implementadas
-1. Cola con Prioridad: Atiende camiones priorizando cargas perecederas sobre granos secos.
-2. Matriz 2D: Mapeo cuadricular de la bodega para control de bahías libres (0) u ocupadas (1).
-3. Pila (LIFO): Permite revertir o deshacer el último pesaje en báscula.
-4. Lista Enlazada Simple: Historial cronológico de atención a camiones.
-5. Lista Doble Enlazada: Registro de auditoría de tiquetes navegable hacia adelante y hacia atrás.
-6. Lista Circular: Rotación automática de turno entre inspectores de calidad.
-
----
-
-## How to Run / Cómo Ejecutar
-
-1. Compilar clases / Compile classes:
-   javac -d bin src/model/*.java src/view/*.java src/controller/*.java
-
-2. Ejecutar programa / Run application:
-   java -cp bin controller.Main
+```bash
+javac --module-path "C:\javafx-sdk-27.0.1\lib" --add-modules javafx.controls,javafx.fxml -d bin src/model/*.java src/view/*.java src/controller/*.java
+java --module-path "C:\javafx-sdk-27.0.1\lib" --add-modules javafx.controls,javafx.fxml -cp bin controller.Main

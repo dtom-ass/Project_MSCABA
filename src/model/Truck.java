@@ -1,53 +1,40 @@
 package model;
 
 /**
- * Representa un camión que llega a la entrada del centro de acopio.
+ * Represents a truck arriving at the agro-industrial collection center.
  */
 public class Truck {
     private String licensePlate;
-    private String productType; // Ejemplo: "Perecedero", "Grano Seco"
-    private double tareWeight;   // Peso del camión vacío
-    private double grossWeight;  // Peso bruto con carga
-    private int priority;        // 1 = Alta (Perecedero), 2 = Normal
+    private String loadCategory; // "Perecedero", "Grano", "Insumo"
+    private String vehicleType;  // "Sencillo", "Doble Troque", "Tractocamion"
+    private double tareWeight;   // Empty weight in tons
+    private double grossWeight;  // Gross weight in tons
+    private int priority;        // 1 = High, 2 = Normal, 3 = Low
 
-    public Truck(String licensePlate, String productType, double tareWeight, double grossWeight, int priority) {
+    public Truck(String licensePlate, String loadCategory, String vehicleType, double tareWeight, double grossWeight, int priority) {
         this.licensePlate = licensePlate;
-        this.productType = productType;
+        this.loadCategory = loadCategory;
+        this.vehicleType = vehicleType;
         this.tareWeight = tareWeight;
         this.grossWeight = grossWeight;
         this.priority = priority;
     }
 
-    /**
-     * Calcula el peso neto del producto agrícola restando el peso bruto menos la tara.
-     */
     public double getNetWeight() {
-        return this.grossWeight - this.tareWeight;
+        return Math.max(0.0, this.grossWeight - this.tareWeight);
     }
 
-    // Getters y Setters
+    // Getters
     public String getLicensePlate() { return licensePlate; }
-    public void setLicensePlate(String licensePlate) { this.licensePlate = licensePlate; }
-
-    public String getProductType() { return productType; }
-    public void setProductType(String productType) { this.productType = productType; }
-
+    public String getLoadCategory() { return loadCategory; }
+    public String getVehicleType() { return vehicleType; }
     public double getTareWeight() { return tareWeight; }
-    public void setTareWeight(double tareWeight) { this.tareWeight = tareWeight; }
-
     public double getGrossWeight() { return grossWeight; }
-    public void setGrossWeight(double grossWeight) { this.grossWeight = grossWeight; }
-
     public int getPriority() { return priority; }
-    public void setPriority(int priority) { this.priority = priority; }
 
     @Override
     public String toString() {
-        return "Truck{" +
-                "plate='" + licensePlate + '\'' +
-                ", product='" + productType + '\'' +
-                ", netWeight=" + getNetWeight() +
-                ", priority=" + priority +
-                '}';
+        return "Truck [Plate=" + licensePlate + ", Category=" + loadCategory + 
+               ", Vehicle=" + vehicleType + ", Net=" + String.format("%.2f", getNetWeight()) + "t, Priority=" + priority + "]";
     }
 }
